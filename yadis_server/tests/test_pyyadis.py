@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `pyyadis` package."""
+"""Tests for `yadis_server` package."""
 
 __author__ = """Philip Kershaw"""
 __contact__ = 'philip.kershaw@stfc.ac.uk'
@@ -13,12 +13,12 @@ __license__ = "BSD - see LICENSE file in top-level package directory"
 import unittest
 from click.testing import CliRunner
 
-from pyyadis import pyyadis
-from pyyadis import cli
+from yadis_server import yadis_server
+from yadis_server import cli
 
 
-class TestPyyadis(unittest.TestCase):
-    """Tests for `pyyadis` package."""
+class Testyadis_server(unittest.TestCase):
+    """Tests for `yadis_server` package."""
 
     def setUp(self):
         """Set up test fixtures, if any."""
@@ -34,7 +34,7 @@ class TestPyyadis(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main)
         assert result.exit_code == 0
-        assert 'pyyadis.cli.main' in result.output
+        assert 'yadis_server.cli.main' in result.output
         help_result = runner.invoke(cli.main, ['--help'])
         assert help_result.exit_code == 0
         assert '--help  Show this message and exit.' in help_result.output

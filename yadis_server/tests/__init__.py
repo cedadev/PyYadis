@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Unit test package for pyyadis."""
+"""Unit test package for yadis_server."""
 
 __author__ = """Philip Kershaw"""
 __contact__ = 'philip.kershaw@stfc.ac.uk'

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for PyYadis."""
+"""Top-level package for yadis_server."""
 
 __author__ = """Philip Kershaw"""
 __contact__ = "philip.kershaw@stfc.ac.uk"

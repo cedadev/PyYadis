@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 __author__ = "Philip Kershaw"
 __contact__ = "philip.kershaw@stfc.ac.uk"
-__copyright__ = "Copyright 2018 United Kingdom Research and Innovation"
+__copyright__ = "Copyright 2020 United Kingdom Research and Innovation"
 __license__ = "BSD - see LICENSE file in top-level package directory"
 
 
@@ -16,7 +16,7 @@ from setuptools import setup, find_packages
 # One strategy for storing the overall version is to put it in the top-level
 # package's __init__ but Nb. __init__.py files are not needed to declare
 # packages in Python 3
-from pyyadis import __version__ as _package_version
+from yadis_server import __version__ as _package_version
 
 # Populate long description setting with content of README
 #
@@ -75,13 +75,13 @@ setup(
     long_description_content_type='text/markdown',
 
     include_package_data=True,
-    keywords='pyyadis',
-    name='pyyadis',
-    packages=find_packages(include=['pyyadis']),
+    keywords='PyYadis',
+    name='PyYadis',
+    packages=find_packages(include=['yadis']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/cedadev/PyYadis',
+    url='https://github.com/cedadev/yadis_server',
     version=_package_version,
     zip_safe=False,
 )
