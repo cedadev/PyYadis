@@ -26,7 +26,7 @@ with open("README.md") as readme_file:
     _long_description = readme_file.read()
 
 
-requirements = ['Click>=6.0', 'flask']
+requirements = ['flask']
 
 setup_requirements = [ ]
 

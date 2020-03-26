@@ -7,72 +7,54 @@ __author__ = """Philip Kershaw"""
 __contact__ = "philip.kershaw@stfc.ac.uk"
 __copyright__ = "Copyright 2020 United Kingdom Research and Innovation"
 __license__ = "BSD - see LICENSE file in top-level package directory"
-from flask import Flask, escape, request, Response
-from markupsafe import escape
+from flask import Flask, request, Response
 
 
 class YadisFlaskAppConfigError(Exception):
     "Error with configuration settings for Yadis Flask application"
 
 
-app = Flask(__name__)
+class YadisFlaskApp:
+    CFG_FILEPATH_ENVVARNAME = 'YADIS_FLASK_APP_CFG_FILEPATH'
+    RESPONSE_TYPE = 'application/xrd+xml'
+    TMPL_FILENAME = 'yadis.xml'
+    
+    @classmethod
+    def create(cls, config=None):
+        app = Flask(__name__, instance_relative_config=True)
+        
+        if config is not None:
+            app.config.update(config)
+            
+        elif not app.config.from_envvar(cls.CFG_FILEPATH_ENVVARNAME):
+            # Set configuration from a separate module 
+            raise YadisFlaskAppConfigError(f'Error loading config file path '
+                                           'Please check the "{cls.CFG_FILEPATH_ENVVARNAME}"'
+                                           'environment variable is set to valid file')
+        
+        @app.route(f'{app.config["OPENID_URI_PATH_PREFIX"]}/<username>')
+        def yadis_personal_response(username):
+            '''Respond to Yadis calls with personal identifier contained in the OpenID'''
+            return Response(render_template(cls.TMPL_FILENAME, app=app, user_uri=request.url), 
+                            mimetype=cls.RESPONSE_TYPE)
+        
+        @app.route('/openid/')
+        def yadis_general_response():
+            """Generic response for Yadis call where the OpenID is generalised for the IdP and
+            contains no personal identifier"""
+            return Response(render_template(cls.TMPL_FILENAME, app=app), 
+                            mimetype=cls.RESPONSE_TYPE)
+            
+        return app
 
-# Set configuration from a separate module 
-if not app.config.from_envvar('YADIS_FLASK_APP_CFG_FILEPATH'):
-    raise YadisFlaskAppConfigError('Error loading config file path '
-                                   'Please check the "YADIS_FLASK_APP_CFG_FILEPATH"'
-                                   'environment variable is set to valid file')
 
-
-@app.route(f'{app.config["OPENID_URI_PATH_PREFIX"]}/<username>')
-def yadis_personal_response(username):
-    '''Respond to Yadis calls with personal identifier contained in the OpenID'''
-#     return Response(f'''<?xml version="1.0" encoding="UTF-8"?>
-# <xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
-#     <XRD>
-#         <Service priority="20">
-#             <Type>urn:esg:security:attribute-service</Type>
-#             <URI>{app.config["ATTRIBUTE_SERVICE_URI"]}</URI>
-#             <LocalID>{request.url}</LocalID>
-#         </Service>
-#         <Service priority="10">
-#             <Type>urn:esg:security:myproxy-service</Type>
-#             <URI>{app.config["MYPROXY_SERVICE_URI"]}</URI>
-#             <LocalID>{request.url}</LocalID>
-#         </Service>
-#         <Service priority="10">
-#             <Type>urn:esg:security:slcs</Type>
-#             <URI>{app.config["SLCS_URI"]}</URI>
-#             <LocalID>{request.url}</LocalID>
-#         </Service>
-#         <Service priority="5">
-#             <Type>urn:esg:security:oauth:endpoint:access</Type>
-#             <URI>{app.config["OAUTH_ACCESS_TOK_URI"]}</URI>
-#             <LocalID>{request.url}</LocalID>
-#         </Service>
-#         <Service priority="5">
-#             <Type>urn:esg:security:oauth:endpoint:resource</Type>
-#             <URI>{app.config["OAUTH_RESOURCE_URI"]}</URI>
-#             <LocalID>{request.url}</LocalID>
-#         </Service>
-#         <Service priority="5">
-#             <Type>urn:esg:security:oauth:endpoint:authorize</Type>
-#             <URI>{app.config["OAUTH_AUTHORIZE_URI"]}</URI>
-#             <LocalID>{request.url}</LocalID>
-#         </Service>
-#    </XRD>
-# </xrds:XRDS>
-# ''', mimetype='text/xml')
-    return Response(render_template('yadis.xml', app=app, user_uri=request.url), 
-                    mimetype='application/xrd+xml')
-
-@app.route('/openid/')
-def yadis_general_response():
-    """Generic response for Yadis call where the OpenID is generalised for the IdP and
-    contains no personal identifier"""
-    return Response(render_template('yadis.xml', app=app), 
-                    mimetype='application/xrd+xml')
+def create():
+    '''Convenience factory function for use with waitress e.g.
+    
+    `% waitress-serve --call 'yadis_server:flask_app.create`
+    '''
+    return YadisFlaskApp.create()
 
 
 if __name__ == "__main__":
-    app.run()
+    YadisFlaskApp.create().run()
