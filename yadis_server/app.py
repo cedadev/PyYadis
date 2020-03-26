@@ -51,10 +51,6 @@ class YadisFlaskApp:
 def create():
     '''Convenience factory function for use with waitress e.g.
     
-    `% waitress-serve --call 'yadis_server:flask_app.create'`
+    `% waitress-serve --call 'yadis_server:app.create'`
     '''
     return YadisFlaskApp.create()
-
-
-if __name__ == "__main__":
-    YadisFlaskApp.create().run()

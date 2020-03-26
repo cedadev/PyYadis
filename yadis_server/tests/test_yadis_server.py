@@ -12,7 +12,7 @@ import os
 import tempfile
 import pytest
 
-from ..flask_app import YadisFlaskApp
+from ..app import YadisFlaskApp
 
 
 @pytest.fixture
