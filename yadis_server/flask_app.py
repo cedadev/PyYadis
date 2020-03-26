@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Flask callbacks for returning Yadis responses."""
+from flask.templating import render_template
 
 __author__ = """Philip Kershaw"""
 __contact__ = "philip.kershaw@stfc.ac.uk"
@@ -26,76 +27,52 @@ if not app.config.from_envvar('YADIS_FLASK_APP_CFG_FILEPATH'):
 @app.route(f'{app.config["OPENID_URI_PATH_PREFIX"]}/<username>')
 def yadis_personal_response(username):
     '''Respond to Yadis calls with personal identifier contained in the OpenID'''
-    return Response(f'''<?xml version="1.0" encoding="UTF-8"?>
-<xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
-    <XRD>
-        <Service priority="20">
-            <Type>urn:esg:security:attribute-service</Type>
-            <URI>{app.config["ATTRIBUTE_SERVICE_URI"]}</URI>
-            <LocalID>{request.url}</LocalID>
-        </Service>
-        <Service priority="10">
-            <Type>urn:esg:security:myproxy-service</Type>
-            <URI>{app.config["MYPROXY_SERVICE_URI"]}</URI>
-            <LocalID>{request.url}</LocalID>
-        </Service>
-        <Service priority="10">
-            <Type>urn:esg:security:slcs</Type>
-            <URI>{app.config["SLCS_URI"]}</URI>
-            <LocalID>{request.url}</LocalID>
-        </Service>
-        <Service priority="5">
-            <Type>urn:esg:security:oauth:endpoint:access</Type>
-            <URI>{app.config["OAUTH_ACCESS_TOK_URI"]}</URI>
-            <LocalID>{request.url}</LocalID>
-        </Service>
-        <Service priority="5">
-            <Type>urn:esg:security:oauth:endpoint:resource</Type>
-            <URI>{app.config["OAUTH_RESOURCE_URI"]}</URI>
-            <LocalID>{request.url}</LocalID>
-        </Service>
-        <Service priority="5">
-            <Type>urn:esg:security:oauth:endpoint:authorize</Type>
-            <URI>{app.config["OAUTH_AUTHORIZE_URI"]}</URI>
-            <LocalID>{request.url}</LocalID>
-        </Service>
-   </XRD>
-</xrds:XRDS>
-''', mimetype='text/xml')
+#     return Response(f'''<?xml version="1.0" encoding="UTF-8"?>
+# <xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
+#     <XRD>
+#         <Service priority="20">
+#             <Type>urn:esg:security:attribute-service</Type>
+#             <URI>{app.config["ATTRIBUTE_SERVICE_URI"]}</URI>
+#             <LocalID>{request.url}</LocalID>
+#         </Service>
+#         <Service priority="10">
+#             <Type>urn:esg:security:myproxy-service</Type>
+#             <URI>{app.config["MYPROXY_SERVICE_URI"]}</URI>
+#             <LocalID>{request.url}</LocalID>
+#         </Service>
+#         <Service priority="10">
+#             <Type>urn:esg:security:slcs</Type>
+#             <URI>{app.config["SLCS_URI"]}</URI>
+#             <LocalID>{request.url}</LocalID>
+#         </Service>
+#         <Service priority="5">
+#             <Type>urn:esg:security:oauth:endpoint:access</Type>
+#             <URI>{app.config["OAUTH_ACCESS_TOK_URI"]}</URI>
+#             <LocalID>{request.url}</LocalID>
+#         </Service>
+#         <Service priority="5">
+#             <Type>urn:esg:security:oauth:endpoint:resource</Type>
+#             <URI>{app.config["OAUTH_RESOURCE_URI"]}</URI>
+#             <LocalID>{request.url}</LocalID>
+#         </Service>
+#         <Service priority="5">
+#             <Type>urn:esg:security:oauth:endpoint:authorize</Type>
+#             <URI>{app.config["OAUTH_AUTHORIZE_URI"]}</URI>
+#             <LocalID>{request.url}</LocalID>
+#         </Service>
+#    </XRD>
+# </xrds:XRDS>
+# ''', mimetype='text/xml')
+    return Response(render_template('yadis.xml', app=app, user_uri=request.url), 
+                    mimetype='application/xrd+xml')
 
 @app.route('/openid/')
 def yadis_general_response():
     """Generic response for Yadis call where the OpenID is generalised for the IdP and
     contains no personal identifier"""
-    return Response(f'''<?xml version="1.0" encoding="UTF-8"?>
-<xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
-    <XRD>
-        <Service priority="20">
-            <Type>urn:esg:security:attribute-service</Type>
-            <URI>{app.config["ATTRIBUTE_SERVICE_URI"]}</URI>
-        </Service>
-        <Service priority="10">
-            <Type>urn:esg:security:myproxy-service</Type>
-            <URI>{app.config["MYPROXY_SERVICE_URI"]}</URI>
-        </Service>
-        <Service priority="10">
-            <Type>urn:esg:security:slcs</Type>
-            <URI>{app.config["SLCS_URI"]}</URI>
-        </Service>
-        <Service priority="5">
-            <Type>urn:esg:security:oauth:endpoint:access</Type>
-            <URI>{app.config["OAUTH_ACCESS_TOK_URI"]}</URI>
-        </Service>
-        <Service priority="5">
-            <Type>urn:esg:security:oauth:endpoint:resource</Type>
-            <URI>{app.config["OAUTH_RESOURCE_URI"]}</URI>
-        </Service>
-        <Service priority="5">
-            <Type>urn:esg:security:oauth:endpoint:authorize</Type>
-            <URI>{app.config["OAUTH_AUTHORIZE_URI"]}</URI>
-        </Service>
-   </XRD>
-</xrds:XRDS>
-''', mimetype='text/xml')
+    return Response(render_template('yadis.xml', app=app), 
+                    mimetype='application/xrd+xml')
 
 
+if __name__ == "__main__":
+    app.run()
