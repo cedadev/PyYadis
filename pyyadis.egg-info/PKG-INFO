@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
-Name: pyyadis
+Name: PyYadis
 Version: 0.1.0
 Summary: Simple Flask app to serve an XRDS document following Yadis discovery mechanism
-Home-page: https://github.com/cedadev/PyYadis
+Home-page: https://github.com/cedadev/yadis_server
 Author: Philip Kershaw
 Author-email: philip.kershaw@stfc.ac.uk
 License: BSD - see LICENSE file in top-level package directory
@@ -36,7 +36,7 @@ Description: # PyYadis
          * Cookiecutter: https://github.com/audreyr/cookiecutter
          * cookiecutter-pypackage: https://github.com/audreyr/cookiecutter-pypackage
         
-Keywords: pyyadis
+Keywords: PyYadis
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Environment :: Console
