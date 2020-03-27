@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-"""Yadis Flask app config settings."""
+"""Yadis Flask app config settings.  This is an example only.  YADIS_FLASK_APP_CFG_FILEPATH
+environment variable should be set to a config module containing the required settings
+"""
 
 __author__ = """Philip Kershaw"""
 __contact__ = "philip.kershaw@stfc.ac.uk"

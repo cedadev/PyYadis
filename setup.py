@@ -30,7 +30,7 @@ requirements = ['flask']
 
 setup_requirements = [ ]
 
-test_requirements = [ ]
+test_requirements = ['pytest']
 
 
 setup(
@@ -56,6 +56,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Security',
         'Topic :: Internet',
         'Topic :: Scientific/Engineering',
@@ -77,7 +78,7 @@ setup(
     include_package_data=True,
     keywords='PyYadis',
     name='PyYadis',
-    packages=find_packages(include=['yadis']),
+    packages=find_packages(),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,

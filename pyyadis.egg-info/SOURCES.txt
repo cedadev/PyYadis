@@ -15,3 +15,10 @@ PyYadis.egg-info/top_level.txt
 docs/Makefile
 docs/conf.py
 docs/make.bat
+yadis_server/__init__.py
+yadis_server/app.py
+yadis_server/config.py
+yadis_server/run.py
+yadis_server/templates/yadis.xml
+yadis_server/tests/__init__.py
+yadis_server/tests/test_yadis_server.py
