@@ -56,7 +56,7 @@ The application can be run with for example `waitress`:
 
 ```bash
 $ export YADIS_FLASK_APP_CFG_FILEPATH=<config file path>
-$ waitress-serve --call 'yadis_server:create_app.'
+$ waitress-serve --call 'yadis_server:create_app'
 ```
 
 Where `YADIS_FLASK_APP_CFG_FILEPATH` is set to the location of a configuration file containing the settings for the service endpoints to be included in the XRDS.
