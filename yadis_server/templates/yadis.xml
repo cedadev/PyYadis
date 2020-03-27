@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
+    <XRD>
+        <Service priority="20">
+            <Type>urn:esg:security:attribute-service</Type>
+            <URI>{{ app.config["ATTRIBUTE_SERVICE_URI"] }}</URI>{% if user_uri %}
+            <LocalID>{{ user_uri }}</LocalID>{% endif %}
+        </Service>
+        <Service priority="10">
+            <Type>urn:esg:security:myproxy-service</Type>
+            <URI>{{ app.config["MYPROXY_SERVICE_URI"] }}</URI>{% if user_uri %}
+            <LocalID>{{ user_uri }}</LocalID>{% endif %}
+        </Service>
+        <Service priority="10">
+            <Type>urn:esg:security:slcs</Type>
+            <URI>{{ app.config["SLCS_URI"] }}</URI>{% if user_uri %}
+            <LocalID>{{ user_uri }}</LocalID>{% endif %}
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:access</Type>
+            <URI>{{ app.config["OAUTH_ACCESS_TOK_URI"] }}</URI>{% if user_uri %}
+            <LocalID>{{ user_uri }}</LocalID>{% endif %}
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:resource</Type>
+            <URI>{{ app.config["OAUTH_RESOURCE_URI"] }}</URI>{% if user_uri %}
+            <LocalID>{{ user_uri }}</LocalID>{% endif %}
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:authorize</Type>
+            <URI>{{ app.config["OAUTH_AUTHORIZE_URI"] }}</URI>{% if user_uri %}
+            <LocalID>{{ user_uri }}</LocalID>{% endif %}
+        </Service>
+   </XRD>
+</xrds:XRDS>
