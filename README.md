@@ -60,3 +60,82 @@ $ waitress-serve --call 'yadis_server:create_app'
 ```
 
 Where `YADIS_FLASK_APP_CFG_FILEPATH` is set to the location of a configuration file containing the settings for the service endpoints to be included in the XRDS.
+
+## Testing
+Start the service following the instructions in the previous section and then invoke using for example `curl`.
+
+Generic response:
+
+```bash
+$ curl http://localhost:8080/esgf-idp/openid/
+<?xml version="1.0" encoding="UTF-8"?>
+<xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
+    <XRD>
+        <Service priority="20">
+            <Type>urn:esg:security:attribute-service</Type>
+            <URI>https://somesite.ac.uk/attribute-service/</URI>
+        </Service>
+        <Service priority="10">
+            <Type>urn:esg:security:myproxy-service</Type>
+            <URI>socket://somesite.ac.uk:7512</URI>
+        </Service>
+        <Service priority="10">
+            <Type>urn:esg:security:slcs</Type>
+            <URI>https://somesite.ac.uk/onlineca/certificate/</URI>
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:access</Type>
+            <URI>https://somesite.ac.uk/oauth/access_token</URI>
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:resource</Type>
+            <URI>https://somesite.ac.uk/oauth/certificate/</URI>
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:authorize</Type>
+            <URI>https://somesite.ac.uk/oauth/authorize</URI>
+        </Service>
+   </XRD>
+</xrds:XRDS>
+```
+
+Identity Response:
+
+```bash
+curl http://localhost:8080/esgf-idp/openid/j.bloggs
+<?xml version="1.0" encoding="UTF-8"?>
+<xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
+    <XRD>
+        <Service priority="20">
+            <Type>urn:esg:security:attribute-service</Type>
+            <URI>https://somesite.ac.uk/attribute-service/</URI>
+            <LocalID>http://localhost:8080/esgf-idp/openid/j.bloggs</LocalID>
+        </Service>
+        <Service priority="10">
+            <Type>urn:esg:security:myproxy-service</Type>
+            <URI>socket://somesite.ac.uk:7512</URI>
+            <LocalID>http://localhost:8080/esgf-idp/openid/j.bloggs</LocalID>
+        </Service>
+        <Service priority="10">
+            <Type>urn:esg:security:slcs</Type>
+            <URI>https://somesite.ac.uk/onlineca/certificate/</URI>
+            <LocalID>http://localhost:8080/esgf-idp/openid/j.bloggs</LocalID>
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:access</Type>
+            <URI>https://somesite.ac.uk/oauth/access_token</URI>
+            <LocalID>http://localhost:8080/esgf-idp/openid/j.bloggs</LocalID>
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:resource</Type>
+            <URI>https://somesite.ac.uk/oauth/certificate/</URI>
+            <LocalID>http://localhost:8080/esgf-idp/openid/j.bloggs</LocalID>
+        </Service>
+        <Service priority="5">
+            <Type>urn:esg:security:oauth:endpoint:authorize</Type>
+            <URI>https://somesite.ac.uk/oauth/authorize</URI>
+            <LocalID>http://localhost:8080/esgf-idp/openid/j.bloggs</LocalID>
+        </Service>
+   </XRD>
+</xrds:XRDS>
+```
